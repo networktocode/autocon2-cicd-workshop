@@ -12,5 +12,5 @@
             "dockerDashComposeVersion": "none"
         }
     },
-    "postCreateCommand": "bash /workspaces/autocon2-cicd-workshop-dev/postCreate.sh"
+    "postCreateCommand": "bash /workspaces/autocon2-cicd-workshop/postCreate.sh"
 }
