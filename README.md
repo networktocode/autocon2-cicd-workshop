@@ -163,7 +163,9 @@ Appending trace to coordinator...ok                 code=202 job=8156204076 job-
 
 ## Lab Setup Walkthrough Video
 
-Here are video walkthrough to help with illustrate the lab setup. 
+Here are video walkthrough to help with illustrate the lab setup.
+
+[Full Playlist](https://www.youtube.com/watch?v=p7FcvGOZHuY&list=PLAaTeRWIM_wvVYuuBAQ-GjfFWt9xB85C5)
 
 Video 1. Overview and Software Download
 
