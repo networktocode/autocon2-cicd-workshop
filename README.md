@@ -1,8 +1,5 @@
 # Autocon2 CI/CD Workshop Development Repository
 
->[!NOTE]
-> Use this repository to collaborately devlope content before publishing to user. 
-
 Hello! Welcome to [Autocon2 CI/CD workshop](https://networkautomation.forum/autocon2#workshop) proctored by [Eric Chou](https://github.com/ericchou1/), [Jeff Kala](https://github.com/jeffkala), and assisted by [Tim Fiola](https://github.com/tim-fiola). 
 
 You can find the different lab instructions in each of the folders in this repository. 
