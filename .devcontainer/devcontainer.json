@@ -1,0 +1,16 @@
+{
+    "name": "Autocon2 CI/CD Workshop",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04", 
+    // "hostRequirements": {
+    //     "cpus": 4,
+    //     "memory": "16gb",
+    //     "storage": "32gb"
+    // },
+    "features": {
+       "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "dockerDashComposeVersion": "none"
+        }
+    },
+    "postCreateCommand": "bash /workspaces/autocon2-cicd-workshop-dev/postCreate.sh"
+}
