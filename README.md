@@ -1,5 +1,8 @@
 # Autocon2 CI/CD Workshop Development Repository
 
+>[!NOTE]
+> Use this repository to collaborately devlope content before publishing to user. 
+
 Hello! Welcome to [Autocon2 CI/CD workshop](https://networkautomation.forum/autocon2#workshop) proctored by [Eric Chou](https://github.com/ericchou1/), [Jeff Kala](https://github.com/jeffkala), and assisted by [Tim Fiola](https://github.com/tim-fiola). 
 
 You can find the different lab instructions in each of the folders in this repository. 
@@ -7,8 +10,8 @@ You can find the different lab instructions in each of the folders in this repos
 - [Lab 1. Basic Git Operations](./Lab_1_Basic_Git_Operations/README.md)
 - [Lab 2. First Pipeline](./Lab_2_First_Pipeline/README.md)
 - [Lab 3. Build Reviews](./Lab_3_Build_Reviews/README.md)
-- [Lab 4. Configuration Generation with Templates](./Lab_4_Configuration_Generation_with_Templates/README.md)
-- [Lab 5. ACL Change](./Lab_5_ACL_Change/README.md)
+- [Lab 4. Source Code Checks](./Lab_4_Source_Code_Checks/README.md)
+- [Lab 5. Generate Configs with Templates](./Lab_5_Generate_Configs/README.md)
 - [Lab 6. Testing Frameworks](./Lab_6_Testing_Frameworks/README.md)
 
 But first things first, we would like to walk you through how to set up the development environment for the workshop.
@@ -42,6 +45,9 @@ Please do the following steps to set up the lab:
 Please download images later than 4.28. We will use 4.32.0F for our lab. 
 
 ![arista_downaload_2](images/arista_download_2.png)
+
+> [!FYI] 
+> Download the 64 bit image.
 
 > [!TIP]
 You just need to download the image for now, for reference here is the import instruction from [containerlab](https://www.youtube.com/watch?v=KJMVH2okO24) and a nice walk through video from [Roman](https://www.youtube.com/watch?v=KJMVH2okO24). 
@@ -89,73 +95,64 @@ This message shows that your installation appears to be working correctly.
 
 ![upload_ceos](images/upload_ceos.png)
 
+
 3. Use command ```docker import cEOS64.<version>.tar.xz ceos:<version>``` to import the image, for example: 
 
-``docker import cEOS64-lab-4.32.0F.tar ceos:4.32.0F``
+```sh
+docker import cEOS64-lab-4.32.0F.tar ceos:4.32.0F
+```
 
-4. Create GitLab Project
+4. Run the GitLab Runner in a docker container.
 
-Let's create a GitLab Project: 
-
-![create_gitlab_project](images/create_gitlab_project.png)
-
-Choose Blank Project: 
-
-![create_blank_project](images/create_blank_project.png)
-
-Pick a name for the project: 
-
-![gitlab_autocon_lab1](images/gitlab_autocon_lab1.png)
-
+```sh
+docker run -d --name gitlab-runner --restart always \
+-v /srv/gitlab-runner/config:/etc/gitlab-runner \
+-v /var/run/docker.sock:/var/run/docker.sock \
+gitlab/gitlab-runner:latest
+```
 
 5. Register GitLab Runner (screenshot following the steps): 
     - Under the GitLab project you created, get runner token via Project -> Settings -> CI/CD -> Project Runners. 
     - When creating this runner, we will use tags to specify the jobs this runner can pickup. 
-    - Copy the command on the screen to register the runner. 
-    - Come back to the Codespace instance. 
-    - Register runner via the following command ```gitlab-runner register  --url https://gitlab.com  --token <token>```
-    - Use ```shell``` as the executor 
-    - Start the runner with ```gitlab-runner run```
+    - Copy the `token`.
+    - Come back to the Codespace instance.
+    - Register runner via the following command `docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register`
+    - Answer the questions:
+      - Enter GitLab instance: `https://gitlab.com/`
+      - Enter the registration token: `<token you copied previously>`
+      - Enter name for the runner: `leave the default`
+      - Enter an executor: `docker`
+      - Enter the default Docker image: `python:3.10`
 
 ![gitlabrunner_1](images/gitlabrunner_1.png)
 
 ![gitlabrunner_2](images/gitlabrunner_2.png)
 
-```
-$ gitlab-runner register  --url https://gitlab.com  --token <token>
-Runtime platform                                    arch=amd64 os=linux pid=6240 revision=affd9e7d version=17.5.1
-WARNING: Running in user-mode.                     
-WARNING: The user-mode requires you to manually start builds processing: 
-WARNING: $ gitlab-runner run                       
-WARNING: Use sudo for system-mode:                 
-WARNING: $ sudo gitlab-runner...                   
-                                                   
-Created missing unique system ID                    system_id=s_32888d995e9c
-Enter the GitLab instance URL (for example, https://gitlab.com/):
-[https://gitlab.com]: 
-Verifying runner... is valid                        runner=t3_Ho_Fyq
-Enter a name for the runner. This is stored only in the local config.toml file:
-[codespaces-2eb003]: 
-Enter an executor: custom, parallels, virtualbox, docker, docker-windows, instance, shell, ssh, docker+machine, kubernetes, docker-autoscaler:
-shell
-Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
- 
-Configuration (with the authentication token) was saved in "/home/vscode/.gitlab-runner/config.toml" 
+```sh
+$ docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
+Runtime platform arch=amd64 os=linux pid=7 revision=c6eae8d7 version=17.5.2
 
-@ericchou1 ➜ /workspaces/autocon2-cicd-workshop-dev (main) $ gitlab-runner run
-Runtime platform                                    arch=amd64 os=linux pid=6462 revision=affd9e7d version=17.5.1
-Starting multi-runner from /home/vscode/.gitlab-runner/config.toml...  builds=0 max_builds=0
-WARNING: Running in user-mode.                     
-WARNING: Use sudo for system-mode:                 
-WARNING: $ sudo gitlab-runner...                   
-                                                   
-Configuration loaded                                builds=0 max_builds=1
-listen_address not defined, metrics & debug endpoints disabled  builds=0 max_builds=1
-[session_server].listen_address not defined, session endpoints disabled  builds=0 max_builds=1
-Initializing executor providers                     builds=0 max_builds=1
-Checking for jobs... received                       job=8156204076 repo_url=https://gitlab.com/eric-chou-1/test-ci.git runner=t3_Ho_Fyq
-Added job to processing list                        builds=1 job=8156204076 max_builds=1 project=32233373 repo_url=https://gitlab.com/eric-chou-1/test-ci.git time_in_queue_seconds=0
-Appending trace to coordinator...ok                 code=202 job=8156204076 job-log=0-3705 job-status=running runner=t3_Ho_Fyq sent-log=0-3704 status=202 Accepted update-interval=3s
+Running in system-mode.
+
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+https://gitlab.com/
+
+Enter the registration token:
+glrt-t3_ABC123
+
+Verifying runner... is valid runner=t3_GdM4Gs
+
+Enter a name for the runner. This is stored only in the local config.toml file:
+[460ba0646748]:
+
+Enter an executor: custom, virtualbox, docker, instance, shell, ssh, parallels, docker-windows, docker+machine, kubernetes, docker-autoscaler:
+docker
+
+Enter the default Docker image (for example, ruby:2.7):
+python:3.10
+
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
 ```
 
 ![gitlabrunner_3](images/gitlabrunner_3.png)
@@ -163,9 +160,7 @@ Appending trace to coordinator...ok                 code=202 job=8156204076 job-
 
 ## Lab Setup Walkthrough Video
 
-Here are video walkthrough to help with illustrate the lab setup.
-
-[Full Playlist](https://www.youtube.com/watch?v=p7FcvGOZHuY&list=PLAaTeRWIM_wvVYuuBAQ-GjfFWt9xB85C5)
+Here are video walkthrough to help with illustrate the lab setup. 
 
 Video 1. Overview and Software Download
 
@@ -181,7 +176,7 @@ Video 3. Create Gitlab Project
 
 Video 4. Runner Registration
 
-[![video_step_4](images/video_step_4.png)](https://www.youtube.com/watch?v=oHII3icJgB8)
+[![video_step_4](images/video_step_4.png)](https://www.youtube.com/watch?v=I3ng43OSUjc)
 
 That is it, having gone thru the steps will ensure we can jump right into the workshop lab at Autocon2. 
 
@@ -274,4 +269,3 @@ print_result(result)
 - You should see the following result: 
 
 ![optional_first_pipeline](images/optional_fisrt_pipeline.png)
-
