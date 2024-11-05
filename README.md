@@ -6,7 +6,7 @@ You can find the different lab instructions in each of the folders in this repos
 
 - [Lab 1. Basic Git Operations](./Lab_1_Basic_Git_Operations/README.md)
 - [Lab 2. First Pipeline](./Lab_2_First_Pipeline/README.md)
-- [Lab 3. Build Reviews](./Lab_3_Build_Reviews/README.md)
+- [Lab 3. Collaboration Tools](./Lab_3_Collaboration_Tools/README.md)
 - [Lab 4. Source Code Checks](./Lab_4_Source_Code_Checks/README.md)
 - [Lab 5. Generate Configs](./Lab_5_Generate_Configs/README.md)
 - [Lab 6. Testing Frameworks](./Lab_6_Testing_Frameworks/README.md)
