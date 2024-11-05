@@ -1,8 +1,5 @@
 # Autocon2 CI/CD Workshop Development Repository
 
->[!NOTE]
-> Use this repository to collaborately devlope content before publishing to user. 
-
 Hello! Welcome to [Autocon2 CI/CD workshop](https://networkautomation.forum/autocon2#workshop) proctored by [Eric Chou](https://github.com/ericchou1/), [Jeff Kala](https://github.com/jeffkala), and assisted by [Tim Fiola](https://github.com/tim-fiola). 
 
 You can find the different lab instructions in each of the folders in this repository. 
@@ -11,7 +8,7 @@ You can find the different lab instructions in each of the folders in this repos
 - [Lab 2. First Pipeline](./Lab_2_First_Pipeline/README.md)
 - [Lab 3. Build Reviews](./Lab_3_Build_Reviews/README.md)
 - [Lab 4. Source Code Checks](./Lab_4_Source_Code_Checks/README.md)
-- [Lab 5. Generate Configs with Templates](./Lab_5_Generate_Configs/README.md)
+- [Lab 5. Generate Configs](./Lab_5_Generate_Configs/README.md)
 - [Lab 6. Testing Frameworks](./Lab_6_Testing_Frameworks/README.md)
 
 But first things first, we would like to walk you through how to set up the development environment for the workshop.
