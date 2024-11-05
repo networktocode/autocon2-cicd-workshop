@@ -3,6 +3,8 @@ name: "ceos-lab"
 prefix: ""
 
 mgmt:
+  # network: "network-lab"
+  # ipv4-subnet: "172.24.78.0/24"
   network: "bridge"
 
 topology:
@@ -10,27 +12,29 @@ topology:
     ceos:
       image: "ceos:4.32.0F"
 
-  # Example of a node definition
   nodes:
     ceos-01:
       kind: "ceos"
+      # mgmt-ipv4: "172.24.78.10"
       startup-config: "startup-configs/ceos-01.conf"
 
     ceos-02:
       kind: "ceos"
+      # mgmt-ipv4: "172.24.78.11"
       startup-config: "startup-configs/ceos-02.conf"
 
-    # ceos-03:
-    #   kind: "ceos"
-    #   startup-config: "startup-configs/ceos-03.conf"
+    ceos-03:
+      kind: "ceos"
+      # mgmt-ipv4: "172.24.78.12"
+      startup-config: "startup-configs/ceos-03.conf"
 
-    # ceos-04:
-    #   kind: "ceos"
-    #   startup-config: "startup-configs/ceos-04.conf"
+    ceos-04:
+      kind: "ceos"
+      # mgmt-ipv4: "172.24.78.13"
+      startup-config: "startup-configs/ceos-04.conf"
 
   links:
     - endpoints: ["ceos-01:eth1", "ceos-02:eth1"]
-    # - endpoints: ["ceos-01:eth2", "ceos-04:eth2"]
-    # - endpoints: ["ceos-02:eth2", "ceos-03:eth2"]
-    # - endpoints: ["ceos-03:eth1", "ceos-04:eth1"]
-
+    - endpoints: ["ceos-01:eth2", "ceos-04:eth2"]
+    - endpoints: ["ceos-02:eth2", "ceos-03:eth2"]
+    - endpoints: ["ceos-03:eth1", "ceos-04:eth1"]
