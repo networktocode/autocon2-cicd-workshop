@@ -179,6 +179,10 @@ As you can see this is a ton of source code checks. It keeps our projects clean,
 
 Now that we understand lab 4, and the source code checks, lets update and run the pipeline.
 
+By default, the runner we created for another project is available but not enabled to run jobs for this project, so we will need to enable it by going to "Settings -> CI/CD -> Runners" find the runner and click on "Enable for this project":   
+
+![enable-runner](images/enable-runner.png)
+
 These are the two assumptions before you should push your code up:
 
 1. Ensure you've updated your Nornir inventory files from [here](README.md#run-containerlab-topology-and-update-the-nornir-inventory).
