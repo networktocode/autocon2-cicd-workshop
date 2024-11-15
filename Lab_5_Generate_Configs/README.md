@@ -111,7 +111,13 @@ The diagram below explains more about the topology and the goals.
 
 Now that Lab 5 has been explained, lets quickly update our Nornir inventory hosts file and uncomment out a few new attributes that will render new configurations to accomplish the goals explained in the diagram!
 
-1. Navigate to the `hosts.yml` file via `ac2_cicd_workshop/inventory/` directory.
+
+1. We don't want to have to update the `host.yaml` file for Nornir again because we switched branches.  Lets just checkout the single file from Lab_4 that is already accurate.
+
+```
+git checkout Lab_4_Source_Code_Checks ac2_cicd_workshop/inventory/hosts.yml
+```
+
 2. For each host uncomment out the two sections.
 
 First uncomment out the `area` definition under `Lo100`.

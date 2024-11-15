@@ -10,3 +10,5 @@ curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/s
 sudo apt-get install gitlab-runner
 # Download GitLab Runner Docker image
 docker pull gitlab/gitlab-runner:latest
+docker pull batfish/batfish:latest
+docker pull python:3.10

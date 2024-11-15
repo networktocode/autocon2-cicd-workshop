@@ -12,7 +12,7 @@ Let's create a new file named ```.gitlab-ci.yml``` at the root level of the proj
 
 In the file, we will have the following content and use "main" as the target branch: 
 
-```
+```yml
 stages: 
   - deploy
 
@@ -74,7 +74,7 @@ Runtime platform                                    arch=amd64 os=linux pid=7 re
 <skip>
 Verifying runner... is valid                        runner=t3_os7SaS
 Enter a name for the runner. This is stored only in the local config.toml file:
-[7c1081ade0ef]: 
+[7c1081ade0ef]:  # <=======
 <skip>
 ```
 
@@ -96,7 +96,7 @@ total 16
 1835106 -rw-rw-rw-   1 vscode root  877 Nov  5 16:28 ceos-lab.clab.yml
 1835107 drwxrwxrwx+  2 vscode root 4096 Nov  5 16:28 startup-configs
 
-$ sudo containerlab deploy --topo ceos-lab.clab.yml 
+$ sudo containerlab deploy --topo ceos-lab.clab.yml --node-filter ceos-01,ceos-02
 INFO[0000] Containerlab v0.59.0 started                 
 INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
 WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping... 
@@ -152,7 +152,7 @@ $ pip3 install nornir_utils nornir_netmiko
 
 We will create the hosts.yaml file required for Netmiko, please note the IP will need to match the IP assigned to the containerlab from the last step: 
 
-```
+```yml
 $ cat hosts.yaml 
 ---
 eos-1:
@@ -172,7 +172,7 @@ eos-2:
 
 We will create the following ```show_version.py``` file in the same location: 
 
-```
+```python
 #!/usr/bin/env python
 from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
@@ -448,6 +448,3 @@ Job succeeded
 ## Next Steps
 
 Congratulations on building your first Pipeline! This is a huge step forward. In the next lab, we will take a look at some of the tools to help the team collaborate together. 
-
-
-

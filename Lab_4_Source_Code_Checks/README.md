@@ -1,6 +1,6 @@
 ## Lab 4 Source Code Checks
 
-During the first 3 labs we've utilized a new project and built upon it. For labs 4-6 we will use a project that we've created for you.
+During the first 3 labs you've utilized a new project and built upon it. For labs 4-6 we will use a project that we've created for you, this should allow us to focus more on the pipelines and less of the copy/pasting of code.
 
 ## Fork GitLab Repository
 
@@ -42,7 +42,7 @@ Once the forked repository is cloned into codespace you will see it in your file
 
 ![codespace-with-fork](./images/codespace-with-fork.png)
 
-Next, create an access token. The scopes are in the screenshot below.
+Next, create an access token. The scopes are in the screenshot below. Navigate to Settings -> Access tokens from your GitLab forked project.
 
 ![access-token](./images/access-token-generated.png)
 
@@ -61,6 +61,9 @@ com/jeffkala/ac2-cicd-workshop.git
 Due to the nature of GitHub's codespaces; and the docker networking within; there is an initial requirement to update the Nornir inventory file.
 
 1. Execute the containerlab deploy command which based on the topology file will auto assign mgmt interfaces to the lab equipment.
+
+> [!INFO]
+> If you already have a topology running from prior labs, kill that first with `sudo containerlab destroy --topo ceos-lab.clab.yml`
 
 Navigate to clab directory:
 ```
@@ -191,9 +194,9 @@ These are the two assumptions before you should push your code up:
 ```yml
 ---
 default:
-  image: "python:3.10"
+  image: "allprojeff66/ac2-cicd-workshop:latest"
   tags:
-    - "jeffkala-docker-runner-codespace"  # Update using CICD Runner Tag you used!
+    - "jeff-kala-01"  # Update using CICD Runner Tag you used!
 ```
 
 3. Commit and Push your code up!
