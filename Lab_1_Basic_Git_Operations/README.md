@@ -292,4 +292,4 @@ As you can see, Git is a robust code development tool. We are barely cover the b
 - Kirk Byer's [Git for Network Engineeer's Course](https://pynet.twb-tech.com/class-gne.html) class. 
 - Book: [Version Control with Git](https://www.amazon.com/Version-Control-Git-collaborative-development/dp/1449316387/)
 
-In the next lab, we will start to buidl our first CI/CD Pipeline, see you there! 
+In the next lab, we will start to build our first CI/CD Pipeline, see you there! 

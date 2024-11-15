@@ -114,7 +114,7 @@ gitlab/gitlab-runner:latest
 
 5. Register GitLab Runner (screenshot following the steps): 
     - Under the GitLab project you created, get runner token via Project -> Settings -> CI/CD -> Project Runners. 
-    - When creating this runner, we will use tags to specify the jobs this runner can pickup. 
+    - When creating this runner, we will use tags recommend something like `first-last-01` to specify the jobs this runner can pickup. 
     - Copy the `token`.
     - Come back to the Codespace instance.
     - Register runner via the following command `docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register`
@@ -187,66 +187,58 @@ Below is an optional step for those who are somewhat familiar with Gitlab and wa
 
 This is complete optional and we will go over it in the workshop as our first lab, but if you are up for some testing, we can test the end-to-end lab setup with the following steps. 
 
-- Start containerlab
+- Start containerlab (and use --node-filter to only create 2 nodes for now.)
 
 ```
-@ericchou1 ➜ /workspaces/autocon2-cicd-workshop-dev/clab (main) $ sudo containerlab deploy --topo ceos-lab.clab.yml 
-INFO[0000] Containerlab v0.58.0 started                 
+@jeffkala ➜ /workspaces/autocon2-cicd-workshop (main) $ cd clab/
+
+
+@jeffkala ➜ /workspaces/autocon2-cicd-workshop/clab (main) $ sudo containerlab deploy --topo ceos-lab.clab.yml --node-filter ceos-01,ceos-02
+INFO[0000] Containerlab v0.59.0 started                 
+INFO[0000] Applying node filter: ["ceos-01" "ceos-02"]  
 INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
 WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping... 
-INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop-dev/clab/clab-ceos-lab 
+INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop/clab/clab-ceos-lab 
 INFO[0000] Creating container: "ceos-02"                
 INFO[0000] Creating container: "ceos-01"                
 INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-01' node 
 INFO[0000] Created link: ceos-01:eth1 <--> ceos-02:eth1 
 INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-02' node 
-INFO[0042] Adding containerlab host entries to /etc/hosts file 
-INFO[0042] Adding ssh config for containerlab nodes     
+INFO[0046] Adding containerlab host entries to /etc/hosts file 
+INFO[0046] Adding ssh config for containerlab nodes     
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 | # |  Name   | Container ID |    Image     | Kind |  State  | IPv4 Address  | IPv6 Address |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
-| 1 | ceos-01 | 98ff98926159 | ceos:4.32.0F | ceos | running | 172.17.0.3/16 | N/A          |
-| 2 | ceos-02 | 73b94e874b6c | ceos:4.32.0F | ceos | running | 172.17.0.2/16 | N/A          |
+| 1 | ceos-01 | a425c6fb993a | ceos:4.32.0F | ceos | running | 172.17.0.3/16 | N/A          |
+| 2 | ceos-02 | 44ad61fe178c | ceos:4.32.0F | ceos | running | 172.17.0.4/16 | N/A          |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 ```
- - Create a test project with the following CI file .gitlab-ci.yml
 
- ```
-stages: 
-  - deploy
+ - Create a test project(back in GitLab) with the following `hosts.yaml` file
 
-deploy testing:
-  image: "python:3.10"
-  stage: deploy
-  tags: 
-    - "ericchou-1"
-  script: 
-    - pip3 install nornir_utils nornir_netmiko
-    - python3 show_version.py
- ```
+> [!info]
+> Best to create a brand new project as `Autocon_Lab1` you created originally is going to be built upon in the following labs.
 
-- Create the following hosts.yaml file
-
-```
+```yml
 ---
 eos-1:
-    hostname: '172.17.0.2'
+    hostname: '172.17.0.3'  # Update if your deploy chose different IPs
     port: 22
     username: 'admin'
     password: 'admin'
     platform: 'arista_eos'
 
 eos-2:
-    hostname: '172.17.0.3'
+    hostname: '172.17.0.4'  # Update if your deploy chose different IPs
     port: 22
     username: 'admin'
     password: 'admin'
     platform: 'arista_eos'
 ```
 
-- Create the following show_version.py file
+- Create the following `show_version.py` file
 
-```
+```python
 #!/usr/bin/env python
 from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
@@ -267,6 +259,22 @@ result = nr.run(
 print_result(result)
 ```
 
-- You should see the following result: 
+- Create the following CI file `.gitlab-ci.yml`
+
+ ```yml
+stages: 
+  - deploy
+
+deploy testing:
+  image: "python:3.10"
+  stage: deploy
+  tags: 
+    - "ericchou-1"  # Update this with the tag you add to your runner.
+  script: 
+    - pip3 install nornir_utils nornir_netmiko
+    - python3 show_version.py
+ ```
+
+- You should see the following result by navigating to Build --> Pipelines: 
 
 ![optional_first_pipeline](images/optional_fisrt_pipeline.png)

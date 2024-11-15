@@ -166,23 +166,27 @@ This test file has ping checks to validate reachability of our new Lo100 OSPF ro
 
 ## Execute the Full Pipeline
 
-Since lab 5 included a push of the code, we don't have any actual changes to push. This is a bit unique to this workshop and how we're building on top of each lab.
 
-Due to that we're going to execute lab 6 pipeline manually. 
+Since lab 5 included a push of the code, we don't have any actual changes to push. Except for copying over our `host.yaml` file again (downside of using this branching technique).
 
-1. Go into your GitLab UI and navigate to the forked project.
-2. Navigate to Builds from the side menu and click on Pipelines.
+1. Lets checkout the single file from Lab_5 that is already accurate.
+
+```
+git checkout Lab_5_Generate_Configs ac2_cicd_workshop/inventory/hosts.yml
+```
+
+2. Commit and Push your code up!
+
+```sh
+git add -A;git commit -m "lab6 updates";git push -u origin Lab_6_Testing_Frameworks
+```
+
+3. Go into your GitLab UI and navigate to the forked project.
+4. Navigate to Builds from the side menu and click on Pipelines.
 
 ![nav-pipelines](../Lab_4_Source_Code_Checks/images/nav-build-pipelines.png)
 
-3. Click on `New Pipeline`
-4. Create a pipeline run from branch `Lab_6_Testing_Frameworks`
-
-![manual-pipeline](./images/manual-pipeline.png)
-
-5. Click Run Pipeline
-
-6. Watch your Pipeline run!!
+5. Watch your Pipeline run!!
 
 ![pipeline-details](./images/pipeline-details-02.png)
 
