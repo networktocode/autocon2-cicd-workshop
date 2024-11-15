@@ -278,3 +278,15 @@ deploy testing:
 - You should see the following result by navigating to Build --> Pipelines: 
 
 ![optional_first_pipeline](images/optional_fisrt_pipeline.png)
+
+## Final Lab Walk-Through
+
+We encourage you to perform the labs first, if you run into any issues and prefer to see a walk-through for the labs, we prepared the following videos: 
+
+- [Lab 0. Preparation](https://www.youtube.com/watch?v=khg4QeWR-bI&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=1)
+- [Lab 1. Basic Git Operations](https://www.youtube.com/watch?v=a1lfu4FKwt8&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=2)
+- [Lab 2. First Pipeline](https://www.youtube.com/watch?v=Ftl8vABR1R0&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=3)
+- [Lab 3. Collaboration Tools](https://www.youtube.com/watch?v=03vlGKHs9Tc&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=4)
+- [Lab 4. Source Code Checks](https://www.youtube.com/watch?v=i4gffAeCQ0o&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=5)
+- [Lab 5. Generate Configs](https://www.youtube.com/watch?v=SNhDoPAMRkw&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=6)
+- [Lab 6. Testing Frameworks](https://www.youtube.com/watch?v=c7O_fV5SZpg&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=7)

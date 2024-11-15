@@ -12,3 +12,4 @@ sudo apt-get install gitlab-runner
 docker pull gitlab/gitlab-runner:latest
 docker pull batfish/batfish:latest
 docker pull python:3.10
+docker pull allprojeff66/ac2-cicd-workshop:latest
