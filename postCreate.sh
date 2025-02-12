@@ -7,7 +7,7 @@ curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"
 sudo apt install -y iputils-ping net-tools openssh-client python3-pip
 # install gitlab-runner for shell
 curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
-sudo apt-get install gitlab-runner
+sudo apt-get install -y gitlab-runner
 # Download GitLab Runner Docker image
 docker pull gitlab/gitlab-runner:latest
 docker pull batfish/batfish:latest
