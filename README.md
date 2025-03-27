@@ -39,7 +39,7 @@ Please do the following steps to set up the lab:
 1. Register for a free GitLab.com account [here](https://gitlab.com/users/sign_up) if you do not have one. Verify your email address after registration, and also make sure to validate your identity via phone registration.
 2. For a new registration, a group and a project name are required. You can use `Autocon` as the group name and a tem project name or 'Autocon_Lab1' as that is one of the project we will create later:
 
-> [!FYI]
+> [!NOTE]
 > If you registered a new account, you **must** do the email verfication of the new account or you may see issues later.
 
 ![gitlab_account_signup](images/gitlab_account_signup.png)
@@ -52,7 +52,7 @@ Please download images later than 4.28. We will use 4.32.0F for our lab.
 
 ![arista_downaload_2](images/arista_download_2.png)
 
-> [!FYI]
+> [!NOTE]
 > Download the 64 bit image.
 
 > [!TIP]
