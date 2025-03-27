@@ -1,8 +1,8 @@
 # Autocon2 CI/CD Workshop Development Repository
 
-Hello! Welcome to [Autocon2 CI/CD workshop](https://networkautomation.forum/autocon2#workshop) proctored by [Eric Chou](https://github.com/ericchou1/), [Jeff Kala](https://github.com/jeffkala), and assisted by [Tim Fiola](https://github.com/tim-fiola). 
+Hello! Welcome to [Autocon2 CI/CD workshop](https://networkautomation.forum/autocon2#workshop) developed originally by [Eric Chou](https://github.com/ericchou1/) and [Jeff Kala](https://github.com/jeffkala), and revisited by [Christian Adell](https://github.com/chadell).
 
-You can find the different lab instructions in each of the folders in this repository. 
+You can find the different lab instructions in each of the folders in this repository.
 
 - [Lab 1. Basic Git Operations](./Lab_1_Basic_Git_Operations/README.md)
 - [Lab 2. First Pipeline](./Lab_2_First_Pipeline/README.md)
@@ -15,60 +15,65 @@ But first things first, we would like to walk you through how to set up the deve
 
 ## Lab Components
 
-Here is an overview of lab:   
+Here is an overview of lab:
 
 ![Lab_Diagram_v1](images/Lab_Diagram_v1.drawio.png)
 
-Here are the details regarding each components: 
+Here are the details regarding each components:
 
-- [GitLab](https://about.gitlab.com/pricing/): We will use the SaaS version of GitLab as the CI server. The CI server handles the committing, building, testing, staging, and releasing the changes. 
-- [GitLab Runners](https://docs.gitlab.com/runner/): GitLab runners are workers that registers itself with the GitLab server and managed by the GitLab server. They are responsible to carry out the instructions by the GitLab server. 
-- [GitHub Codespace](https://github.com/features/codespaces): We will use GitHub codepsace as our IDE as well as the virtual server to run our network lab. GitHub provides these container-based development environment for developers. We will use Containerlab to run a few network devices for our lab. GitHub offer a generous free tier in Codespace that should remain to be free for the duration of this lab. 
-- [Containerlab](https://containerlab.dev/): We will use containerlab for our lab devices running inside of codepsace.  
-- [Arista cEOS](https://containerlab.dev/manual/kinds/ceos/): We will use Arista cEOS for our lab for their light overhead and relative high adaption in production networks. 
+- [GitLab](https://about.gitlab.com/pricing/): We will use the SaaS version of GitLab as the CI server. The CI server handles the committing, building, testing, staging, and releasing the changes.
+- [GitLab Runners](https://docs.gitlab.com/runner/): GitLab runners are workers that registers itself with the GitLab server and managed by the GitLab server. They are responsible to carry out the instructions by the GitLab server.
+- [GitHub Codespace](https://github.com/features/codespaces): We will use GitHub codepsace as our IDE as well as the virtual server to run our network lab. GitHub provides these container-based development environment for developers. We will use Containerlab to run a few network devices for our lab. GitHub offer a generous free tier in Codespace that should remain to be free for the duration of this lab.
+- [Containerlab](https://containerlab.dev/): We will use containerlab for our lab devices running inside of codepsace.
+- [Arista cEOS](https://containerlab.dev/manual/kinds/ceos/): We will use Arista cEOS for our lab for their light overhead and relative high adaption in production networks.
+
+Notes:
+
+- You will use the free tier of GitLab and GitHub for this lab.
+- We are using GitLab instead of GitHub for the CI/CD server because its free tier provides custom runners, which is a paid feature in GitHub.
 
 ## GitLab Account Registration and cEOS Download
 
-Please do the following steps to set up the lab: 
+Please do the following steps to set up the lab:
 
-1. Register for a free GitLab.com account [here](https://gitlab.com/users/sign_up) if you do not have one. For a new registration, a project name is required, you can use a temp name or 'Autocon_Lab1' as that is one of the project we will create later: 
+1. Register for a free GitLab.com account [here](https://gitlab.com/users/sign_up) if you do not have one. Verify your email address after registration, and also make sure to validate your identity via phone registration.
+2. For a new registration, a group and a project name are required. You can use `Autocon` as the group name and a tem project name or 'Autocon_Lab1' as that is one of the project we will create later:
 
-> [!FYI] 
+> [!FYI]
 > If you registered a new account, you **must** do the email verfication of the new account or you may see issues later.
-
 
 ![gitlab_account_signup](images/gitlab_account_signup.png)
 
-2. Download the free Arista cEOS image [here](https://www.arista.com/en/login). The image is free but you do need to register an Arista account with your business email. We will import the Arista image Codespace later. 
+2. Download the free Arista cEOS image [here](https://www.arista.com/en/login). The image is free but you do need to register an Arista account with your business email. We will import the Arista image Codespace later.
 
 ![arista_download_1](images/arista_download_1.png)
 
-Please download images later than 4.28. We will use 4.32.0F for our lab. 
+Please download images later than 4.28. We will use 4.32.0F for our lab.
 
 ![arista_downaload_2](images/arista_download_2.png)
 
-> [!FYI] 
+> [!FYI]
 > Download the 64 bit image.
 
 > [!TIP]
-You just need to download the image for now, for reference here is the import instruction from [containerlab](https://www.youtube.com/watch?v=KJMVH2okO24) and a nice walk through video from [Roman](https://www.youtube.com/watch?v=KJMVH2okO24). 
+> You just need to download the image for now, for reference here is the import instruction from [containerlab](https://www.youtube.com/watch?v=KJMVH2okO24) and a nice walk through video from [Roman](https://www.youtube.com/watch?v=KJMVH2okO24).
 
 ### Lab Setup
 
-Alright, now it is time to tie everything together. 
+Alright, now it is time to tie everything together.
 
-1. In this repository, we can start Codespace by going to Code button on the top left corner and choose 'Create codespace on main': 
+1. In this repository, we can start Codespace by going to Code button on the top left corner and choose 'Create codespace on main':
 
 ![codespace_start](images/codespace_start.png)
 
-> [!TIP] 
-> It will take a bit of time to build codespace for the first time, you can click on [building codespace](images/building_codespace.png) to check on the progress. After it started for the first time, when you stop/start the instance it will be much faster. 
+> [!TIP]
+> It will take a bit of time to build codespace for the first time, you can click on [building codespace](images/building_codespace.png) to check on the progress. After it started for the first time, when you stop/start the instance it will be much faster.
 
-Once Codespace is started, we can verify both Docker and containerlab are installed and running: 
+Once Codespace is started (i.e., you see the prompt `@<your id> ➜ /workspaces/autocon2-cicd-workshop (main) $`), in the Terminal, you can verify that Poetry, Docker and containerlab are installed and running:
 
 ```
 @ericchou1 ➜ /workspaces/autocon2-cicd-workshop-dev (main) $ poetry --version
-Poetry (version 1.8.4)
+Poetry (version 2.1.1)
 
 @ericchou1 ➜ /workspaces/autocon2-cicd-workshop-dev (main) $ docker run hello-world
 Unable to find image 'hello-world:latest' locally
@@ -79,31 +84,30 @@ This message shows that your installation appears to be working correctly.
 <skip>
 
 @ericchou1 ➜ /workspaces/autocon2-cicd-workshop-dev (main) $ containerlab version
-  ____ ___  _   _ _____  _    ___ _   _ _____ ____  _       _     
- / ___/ _ \| \ | |_   _|/ \  |_ _| \ | | ____|  _ \| | __ _| |__  
-| |  | | | |  \| | | | / _ \  | ||  \| |  _| | |_) | |/ _` | '_ \ 
+  ____ ___  _   _ _____  _    ___ _   _ _____ ____  _       _
+ / ___/ _ \| \ | |_   _|/ \  |_ _| \ | | ____|  _ \| | __ _| |__
+| |  | | | |  \| | | | / _ \  | ||  \| |  _| | |_) | |/ _` | '_ \
 | |__| |_| | |\  | | |/ ___ \ | || |\  | |___|  _ <| | (_| | |_) |
- \____\___/|_| \_| |_/_/   \_\___|_| \_|_____|_| \_\_|\__,_|_.__/ 
+ \____\___/|_| \_| |_/_/   \_\___|_| \_|_____|_| \_\_|\__,_|_.__/
 
-    version: 0.58.0
-     commit: 2c249b2c
-       date: 2024-10-15T11:38:50Z
+    version: 0.66.0
+     commit: e777ef17
+       date: 2025-03-07T10:23:56Z
      source: https://github.com/srl-labs/containerlab
- rel. notes: https://containerlab.dev/rn/0.58/
+ rel. notes: https://containerlab.dev/rn/0.66/
 ```
 
-2. After codespace is started, right click in the Explorer section and choose upload: 
+2. After codespace is started, right click in the Explorer section and choose upload:
 
 ![upload_ceos](images/upload_ceos.png)
 
-
-3. Use command ```docker import cEOS64.<version>.tar.xz ceos:<version>``` to import the image, for example: 
+3. Use command `docker import cEOS64.<version>.tar.xz ceos:<version>` to import the image, for example:
 
 ```sh
 docker import cEOS64-lab-4.32.0F.tar ceos:4.32.0F
 ```
 
-4. Run the GitLab Runner in a docker container.
+4. Start the custom GitLab Runner in a docker container.
 
 ```sh
 docker run -d --name gitlab-runner --restart always \
@@ -112,18 +116,28 @@ docker run -d --name gitlab-runner --restart always \
 gitlab/gitlab-runner:latest
 ```
 
-5. Register GitLab Runner (screenshot following the steps): 
-    - Under the GitLab project you created, get runner token via Project -> Settings -> CI/CD -> Project Runners. 
-    - When creating this runner, we will use tags recommend something like `first-last-01` to specify the jobs this runner can pickup. 
-    - Copy the `token`.
-    - Come back to the Codespace instance.
-    - Register runner via the following command `docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register`
-    - Answer the questions:
-      - Enter GitLab instance: `https://gitlab.com/`
-      - Enter the registration token: `<token you copied previously>`
-      - Enter name for the runner: `leave the default`
-      - Enter an executor: `docker`
-      - Enter the default Docker image: `python:3.10`
+Make sure that the runner is running with `docker ps`:
+
+```
+$ docker ps
+CONTAINER ID   IMAGE                         COMMAND                  CREATED         STATUS         PORTS     NAMES
+a9d873449385   gitlab/gitlab-runner:latest   "/usr/bin/dumb-init …"   5 seconds ago   Up 4 seconds             gitlab-runner
+```
+
+5. Register GitLab Runner (screenshot following the steps):
+   - Under the GitLab project you created, get runner token via Project -> Settings -> CI/CD -> Runners -> Button "New project runner".
+   - When creating this runner, we will use tags recommend something like `first-last-01` to specify the jobs this runner can pickup.
+   - Click on the "Create runner" button.
+   -
+   - Copy the runner authentication token.
+   - Come back to the Codespace instance.
+   - Register runner via the following command `docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register`
+   - Answer the questions:
+     - Enter GitLab instance: `https://gitlab.com/`
+     - Enter the registration token: `<token you copied previously>`
+     - Enter name for the runner: `leave the default`
+     - Enter an executor: `docker`
+     - Enter the default Docker image: `python:3.10`
 
 ![gitlabrunner_1](images/gitlabrunner_1.png)
 
@@ -158,10 +172,9 @@ Configuration (with the authentication token) was saved in "/etc/gitlab-runner/c
 
 ![gitlabrunner_3](images/gitlabrunner_3.png)
 
-
 ## Lab Setup Walkthrough Video
 
-Here are video walkthrough to help with illustrate the lab setup. 
+Here are video walkthrough to help with illustrate the lab setup.
 
 Video 1. Overview and Software Download
 
@@ -179,13 +192,13 @@ Video 4. Runner Registration
 
 [![video_step_4](images/video_step_4.png)](https://www.youtube.com/watch?v=I3ng43OSUjc)
 
-That is it, having gone thru the steps will ensure we can jump right into the workshop lab at Autocon2. 
+That is it, having gone thru the steps will ensure we can jump right into the workshop lab at Autocon2.
 
-Below is an optional step for those who are somewhat familiar with Gitlab and want to check the end-to-end setup. 
+Below is an optional step for those who are somewhat familiar with Gitlab and want to check the end-to-end setup.
 
 ## (Optional) Checking for end-to-end Lab Setup
 
-This is complete optional and we will go over it in the workshop as our first lab, but if you are up for some testing, we can test the end-to-end lab setup with the following steps. 
+This is complete optional and we will go over it in the workshop as our first lab, but if you are up for some testing, we can test the end-to-end lab setup with the following steps.
 
 - Start containerlab (and use --node-filter to only create 2 nodes for now.)
 
@@ -194,18 +207,18 @@ This is complete optional and we will go over it in the workshop as our first la
 
 
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop/clab (main) $ sudo containerlab deploy --topo ceos-lab.clab.yml --node-filter ceos-01,ceos-02
-INFO[0000] Containerlab v0.59.0 started                 
-INFO[0000] Applying node filter: ["ceos-01" "ceos-02"]  
-INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
-WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping... 
-INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop/clab/clab-ceos-lab 
-INFO[0000] Creating container: "ceos-02"                
-INFO[0000] Creating container: "ceos-01"                
-INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-01' node 
-INFO[0000] Created link: ceos-01:eth1 <--> ceos-02:eth1 
-INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-02' node 
-INFO[0046] Adding containerlab host entries to /etc/hosts file 
-INFO[0046] Adding ssh config for containerlab nodes     
+INFO[0000] Containerlab v0.59.0 started
+INFO[0000] Applying node filter: ["ceos-01" "ceos-02"]
+INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml
+WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping...
+INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop/clab/clab-ceos-lab
+INFO[0000] Creating container: "ceos-02"
+INFO[0000] Creating container: "ceos-01"
+INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-01' node
+INFO[0000] Created link: ceos-01:eth1 <--> ceos-02:eth1
+INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-02' node
+INFO[0046] Adding containerlab host entries to /etc/hosts file
+INFO[0046] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 | # |  Name   | Container ID |    Image     | Kind |  State  | IPv4 Address  | IPv6 Address |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
@@ -214,7 +227,7 @@ INFO[0046] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 ```
 
- - Create a test project(back in GitLab) with the following `hosts.yaml` file
+- Create a test project(back in GitLab), and then add a file `hosts.yaml` with the following content (you can do this directly in GitLab UI, next to the Project name, click on the "+" sign and choose "New file"):
 
 > [!info]
 > Best to create a brand new project as `Autocon_Lab1` you created originally is going to be built upon in the following labs.
@@ -222,18 +235,18 @@ INFO[0046] Adding ssh config for containerlab nodes
 ```yml
 ---
 eos-1:
-    hostname: '172.17.0.3'  # Update if your deploy chose different IPs
-    port: 22
-    username: 'admin'
-    password: 'admin'
-    platform: 'arista_eos'
+  hostname: "172.17.0.3" # Update if your deploy chose different IPs
+  port: 22
+  username: "admin"
+  password: "admin"
+  platform: "arista_eos"
 
 eos-2:
-    hostname: '172.17.0.4'  # Update if your deploy chose different IPs
-    port: 22
-    username: 'admin'
-    password: 'admin'
-    platform: 'arista_eos'
+  hostname: "172.17.0.4" # Update if your deploy chose different IPs
+  port: 22
+  username: "admin"
+  password: "admin"
+  platform: "arista_eos"
 ```
 
 - Create the following `show_version.py` file
@@ -244,44 +257,45 @@ from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
 from nornir_utils.plugins.functions import print_result
 
-# Initialize Nornir, by default it will look for the 
-# hosts.yaml file in the same directory. 
+# Initialize Nornir, by default it will look for the
+# hosts.yaml file in the same directory.
 nr = InitNornir()
 
-# Run the show version command for each of the devices. 
-# store the value in the results variable. 
+# Run the show version command for each of the devices.
+# store the value in the results variable.
 result = nr.run(
     task=netmiko_send_command,
     command_string="show version"
 )
 
-# print the results in 
+# print the results in
 print_result(result)
 ```
 
 - Create the following CI file `.gitlab-ci.yml`
 
- ```yml
-stages: 
+```yml
+---
+stages:
   - deploy
 
 deploy testing:
   image: "python:3.10"
   stage: deploy
-  tags: 
-    - "ericchou-1"  # Update this with the tag you add to your runner.
-  script: 
+  tags:
+    - "ericchou-1" # Update this with the tag you add to your runner.
+  script:
     - pip3 install nornir_utils nornir_netmiko
     - python3 show_version.py
- ```
+```
 
-- You should see the following result by navigating to Build --> Pipelines: 
+- After you commit the `.gitlab-ci.yml`, GitLab is instructed to run a pipeline. After a few minutes (~15 minutes), you should see the following result by navigating to Build --> Pipelines:
 
 ![optional_first_pipeline](images/optional_fisrt_pipeline.png)
 
 ## Final Lab Walk-Through
 
-We encourage you to perform the labs first, if you run into any issues and prefer to see a walk-through for the labs, we prepared the following videos: 
+We encourage you to perform the labs first, if you run into any issues and prefer to see a walk-through for the labs, we prepared the following videos:
 
 - [Lab 0. Preparation](https://www.youtube.com/watch?v=khg4QeWR-bI&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=1)
 - [Lab 1. Basic Git Operations](https://www.youtube.com/watch?v=a1lfu4FKwt8&list=PLAaTeRWIM_wtlNigH6vmUlfwM1-BD9mQH&index=2)
