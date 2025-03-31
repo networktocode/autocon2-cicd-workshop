@@ -46,10 +46,7 @@ Next, create an access token. The scopes are in the screenshot below. Navigate t
 
 ![access-token](./images/access-token-generated.png)
 
-
-Finally, in set your origin with your HTTP basic authentication.
-
-From within the `ac2_cicd_workshop` directory.
+Finally, in set your origin with your HTTP basic authentication (from within the `ac2_cicd_workshop` directory), use the token as `<glpat>`.
 
 ```sh
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/ac2-cicd-workshop/ac2_cicd_workshop (Lab_4_Source_Code_Checks) $ git remote set-url origin https://<gitlab-user>:<glpat>@gitlab.
@@ -66,18 +63,20 @@ Due to the nature of GitHub's codespaces; and the docker networking within; ther
 > If you already have a topology running from prior labs, kill that first with `sudo containerlab destroy --topo ceos-lab.clab.yml`
 
 Navigate to clab directory:
+
 ```
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev (jkala-work) $ cd clab/
 ```
 
 Start the topology:
+
 ```
-@jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/clab (jkala-work) $ sudo containerlab deploy --topo ceos-lab.clab.yml 
-INFO[0000] Containerlab v0.59.0 started                 
-INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
+@jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/clab (jkala-work) $ sudo containerlab deploy --topo ceos-lab.clab.yml
+INFO[0000] Containerlab v0.59.0 started
+INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml
 < omitted >
-INFO[0083] Adding containerlab host entries to /etc/hosts file 
-INFO[0083] Adding ssh config for containerlab nodes     
+INFO[0083] Adding containerlab host entries to /etc/hosts file
+INFO[0083] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 | # |  Name   | Container ID |    Image     | Kind |  State  | IPv4 Address  | IPv6 Address |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
@@ -88,11 +87,11 @@ INFO[0083] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 ```
 
-2. Now that the lab has been deployed in the Codespace environment, and we have the mgmt IPs of the equipment we must update the Nornir inventory host file with the assigned IPs.
+Now that the lab has been deployed in the Codespace environment, and we have the mgmt IPs of the equipment we must update the Nornir inventory host file with the assigned IPs.
 
-3. To get started we will checkout the GitLab branch called `Lab_4_Source_Code_Checks` where we will update our Nornir inventory and push the code up to run the code checks.
+1. To get started we will checkout the GitLab branch called `Lab_4_Source_Code_Checks` where we will update our Nornir inventory and push the code up to run the code checks.
 
-4. Navigate and Checkout the Working Branch
+2. Navigate and Checkout the Working Branch
 
 From within the Codespace terminal change into the newly cloned fork.
 
@@ -102,16 +101,16 @@ cd ../ac2-cicd-workshop/ac2_cicd_workshop/
 
 Next, checkout the `Lab_4_Source_Code_Checks` branch.
 
-
 ```sh
 git switch Lab_4_Source_Code_Checks
 ```
 
-5. Now navigate to ac2_cicd_workshop --> inventory --> hosts.yml
+3. Now navigate to ac2_cicd_workshop --> inventory --> hosts.yml
 
 Update the host definitions `hostname` field with the correct IP address from the containerlab deploy command output.
 
 For example the updates would look like this.
+
 ```yml
 ---
 ceos-01:
@@ -137,12 +136,12 @@ When you open the `.gitlab-ci.yml` file you will notice we have some defaults, w
 Next, we will look at the `stages:` section which tells our pipeline what stages and what order they should be executed in.
 
 ```yml
-stages:  # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - "lab-4-lint-and-format"
   - "lab-4-pytest"
 ```
 
-You will finally see the `include:` section which is where we can add additonal gitlab-ci files. We will add more files to this section throughout labs 5 and 6.
+You will finally see the `include:` section which is where we can add additional gitlab-ci files. We will add more files to this section throughout labs 5 and 6.
 
 ```yml
 include:
@@ -158,6 +157,7 @@ Lets now review the details of that included file to see what source code checks
 yamllint-job:
   stage: "lab-4-lint-and-format"
 ```
+
 Each job then has an execution strategy and commands.
 
 ```yml
@@ -167,13 +167,14 @@ yamllint-job:
     - "echo 'Linting Nornir YAML inventory files..'"
     - "poetry run yamllint . --config-file .yamllint.yml --strict"
 ```
+
 In this yamllint-job we're echoing a simple description, followed by running yamllint from within our poetry environment.
 
 3. Notice this file has all our other source code checks we want to enforce. Some simple explanations are below.
 
 - **yamllint** - Validate all our YAML files in the project are formatted to our standards, e.g. all strings should be wrapped in double quotes.
 - **j2lint** - Our source code has a Jinja2 templates directory. This directory holds all the templates we will use to generate our Arista configurations. J2Lint validates these template files follow best practices.
-- **ruff** - We use ruff in two stages. The first lints and formats our source codes python files.  The second does ruff formatting checks to find python antipatterns etc.
+- **ruff** - We use ruff in two stages. The first lints and formats our source codes python files. The second does ruff formatting checks to find python antipatterns etc.
 - **pytest** - Finally, we have some basic unittest in the project that are unittest validating the source code itself. This checks only for tests under the `tests/unit` folder.
 
 As you can see this is a ton of source code checks. It keeps our projects clean, and following best practices for multiple different file types and frameworks.
@@ -182,7 +183,7 @@ As you can see this is a ton of source code checks. It keeps our projects clean,
 
 Now that we understand lab 4, and the source code checks, lets update and run the pipeline.
 
-By default, the runner we created for another project is available but not enabled to run jobs for this project, so we will need to enable it by going to "Settings -> CI/CD -> Runners" find the runner and click on "Enable for this project":   
+By default, the runner we created for another project is available but not enabled to run jobs for this project, so we will need to enable it by going to "Settings -> CI/CD -> Runners" find the runner and click on "Enable for this project":
 
 ![enable-runner](images/enable-runner.png)
 
@@ -196,7 +197,7 @@ These are the two assumptions before you should push your code up:
 default:
   image: "allprojeff66/ac2-cicd-workshop:latest"
   tags:
-    - "jeff-kala-01"  # Update using CICD Runner Tag you used!
+    - "jeff-kala-01" # Update using CICD Runner Tag you used!
 ```
 
 3. Commit and Push your code up!
