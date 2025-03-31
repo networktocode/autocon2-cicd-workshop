@@ -1,72 +1,74 @@
 # Lab 2. First Pipeline
 
-In this lab, we will start to build our CI/CD pipeline on GitLab. If you have not done so already, please follow the steps in [README](../README.md) and make sure you have the environment set up and ready to go. 
+In this lab, we will start to build our CI/CD pipeline on GitLab. If you have not done so already, please follow the steps in [README](../README.md) and make sure you have the environment set up and ready to go.
 
 ## Hello World Pipeline
 
-In this lab, we will use the same [GitLab Project](../Lab_1_Basic_Git_Operations/README.md) we set up in the last lab, however, please feel free to create another project if you'd like. 
+In this lab, we will use the same [GitLab Project](../Lab_1_Basic_Git_Operations/README.md) we set up in the last lab, however, please feel free to create another project if you'd like.
 
-Let's create a new file named ```.gitlab-ci.yml``` at the root level of the project. The name and the location are important. 
+Let's create a new file named `.gitlab-ci.yml` at the root level of the project. The name and the location are important.
 
 ![create_new_file](images/create_new_file.png)
 
-In the file, we will have the following content and use "main" as the target branch: 
+In the file, we will have the following content and use "main" as the target branch:
 
 ```yml
-stages: 
+stages:
   - deploy
 
 deploy testing:
   image: "ubuntu:22.04"
   stage: deploy
-  script: 
+  script:
     - echo "hello world"
 ```
 
-Once created, the following page will have a circle showing the gitlab-runner status: 
+Once created, the following page will have a circle showing the gitlab-runner status:
 
 ![runner_1](images/runner_1.png)
 
-We can clicked on it, which will bring us to the detail page: 
+We can clicked on it, which will bring us to the detail page:
 
 ![runner_2](images/runner_2.png)
 
-We can click on the green circle under Pipeline to bring up the log details: 
+We can click on the green circle under Pipeline to bring up the log details:
 
 ![runner_3](images/runner_3.png)
 
 At this point, we can see that the pipeline allows us to commands on a remote runner, that is great!
 
-But hold on a second, if we take a closer look, we can see the runner that ran this job was a shared runner: 
+But hold on a second, if we take a closer look, we can see the runner that ran this job was a shared runner:
 
 ![runner_4](images/runner_4.png)
 
-If we go back to our CI/CD -> Runners page, we can see there are both the runners we registered under our Codespace, as well as shared runners provided by GitLab: 
+If we go back to our CI/CD -> Runners page, we can see there are both the runners we registered under our Codespace, as well as shared runners provided by GitLab:
 
 ![shared_runners](images/shared_runners.png)
 
-We will add a tag to the stage to allow us to pin the job to the particular runner. We can go back to ```.gitlab-ci.yml``` file and edit it directly in the page: 
+We will add a tag to the stage to allow us to pin the job to the particular runner. We can go back to `.gitlab-ci.yml` file and edit it directly in the page:
 
-![edit_runnder](images/edit_runner.png)
+![edit_runner](images/edit_runner.png)
 
-Add the tag to what you have set it out when the runner was registered, for me, it was ```ericchou-1```: 
+Add the tag to what you have set it out when the runner was registered, for me, it was `ericchou-1`:
 
 ```
-stages: 
+stages:
   - deploy
 
 deploy testing:
   image: "ubuntu:22.04"
   stage: deploy
-  tags: 
+  tags:
     - "ericchou-1"
-  script: 
+  script:
     - echo "hello world"
 ```
 
-Now when we look at the detail page, we can match it up with the previously registered runner (such as the name of the runner 7c1081ade0ef): 
+Now when we look at the detail page, we can match it up with the previously registered runner (such as the name of the runner 7c1081ade0ef):
 
 ![project_runner](images/project_runner.png)
+
+In your GitHub Codespace (where your custom runner is running), you can check that the runner ID matches the one in the pipeline:
 
 ```
 $ docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
@@ -78,11 +80,11 @@ Enter a name for the runner. This is stored only in the local config.toml file:
 <skip>
 ```
 
-Cool, we are moving right along. Let's build on this example with a Netmiko script. 
+Cool, we are moving right along. Let's build on this example with a Netmiko script.
 
 ## Launch Containerlab
 
-We have pre-installe containerlab executable and the topology file during the Codespace built process. In a separate terminal window, let's launch the lab: 
+We have pre-installed containerlab executable and the topology file during the Codespace built process. In a separate terminal window, let's launch the lab (in this case, limiting to only a few nodes with the `--node-filter` option):
 
 ```
 $ pwd
@@ -97,18 +99,18 @@ total 16
 1835107 drwxrwxrwx+  2 vscode root 4096 Nov  5 16:28 startup-configs
 
 $ sudo containerlab deploy --topo ceos-lab.clab.yml --node-filter ceos-01,ceos-02
-INFO[0000] Containerlab v0.59.0 started                 
-INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
-WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping... 
-INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop/clab/clab-ceos-lab 
-INFO[0000] Creating container: "ceos-04"                
-INFO[0000] Creating container: "ceos-02"                
-INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-02' node 
-INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-04' node 
+INFO[0000] Containerlab v0.59.0 started
+INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml
+WARN[0000] Unable to init module loader: stat /lib/modules/6.5.0-1025-azure/modules.dep: no such file or directory. Skipping...
+INFO[0000] Creating lab directory: /workspaces/autocon2-cicd-workshop/clab/clab-ceos-lab
+INFO[0000] Creating container: "ceos-04"
+INFO[0000] Creating container: "ceos-02"
+INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-02' node
+INFO[0000] Running postdeploy actions for Arista cEOS 'ceos-04' node
 <skip>
 ...
-INFO[0095] Adding containerlab host entries to /etc/hosts file 
-INFO[0095] Adding ssh config for containerlab nodes     
+INFO[0095] Adding containerlab host entries to /etc/hosts file
+INFO[0095] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 | # |  Name   | Container ID |    Image     | Kind |  State  | IPv4 Address  | IPv6 Address |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
@@ -117,9 +119,9 @@ INFO[0095] Adding ssh config for containerlab nodes
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 ```
 
-> [!NOTE] To save some resources, I am only building the lab with 2 nodes, your output might look different with additional nodes. 
+> [!NOTE] To save some resources, I am only building the lab with 2 nodes, your output might look different with additional nodes.
 
-We can do some reachability testing to make sure the nodes are up and running: 
+We can do some reachability testing to make sure the nodes are up and running (default credentials are admin/admin):
 
 ```
 $ ssh admin@172.17.0.4
@@ -128,49 +130,51 @@ ED25519 key fingerprint is SHA256:ZVSIaFxsFSTD3vGFDY1sglAXMIOLs3ynb4PXu0oPB6A.
 This key is not known by any other names
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '172.17.0.4' (ED25519) to the list of known hosts.
-(admin@172.17.0.4) Password: 
+(admin@172.17.0.4) Password:
 ceos-02>exit
 Connection to 172.17.0.4 closed.
 
 $ ssh admin@172.17.0.3
-(admin@172.17.0.3) Password: 
+(admin@172.17.0.3) Password:
 Last login: Tue Nov  5 17:27:46 2024 from 172.17.0.1
 ceos-01>exit
 ```
 
-Once the lab is ready, we can move on to create a Netmiko script. 
+Once the lab is ready, we can move on to create a Netmiko script.
 
-## Create Netmiko Python script 
+## Create Netmiko Python script
 
-In this step, we are mainly focused on creating a Python script that can communicate with the network devices. At this point, we are not worrying about the gitlab-runner or any pipeline. 
+In this step, we are mainly focused on creating a Python script that can communicate with the network devices. At this point, we are not worrying about the gitlab-runner or any pipeline.
 
-We will open up another terminal window and install the dependencies: 
+We will open up another terminal window and install the dependencies:
 
 ```
 $ pip3 install nornir_utils nornir_netmiko
 ```
 
-We will create the hosts.yaml file required for Netmiko, please note the IP will need to match the IP assigned to the containerlab from the last step: 
+We will create the hosts.yaml file required for Netmiko, please note the IP will need to match the IP assigned to the containerlab from the last step:
 
 ```yml
-$ cat hosts.yaml 
+$ cat hosts.yaml
 ---
 eos-1:
-    hostname: '172.17.0.3'
-    port: 22
-    username: 'admin'
-    password: 'admin'
-    platform: 'arista_eos'
+  hostname: "172.17.0.3"
+  port: 22
+  username: "admin"
+  password: "admin"
+  platform: "arista_eos"
 
 eos-2:
-    hostname: '172.17.0.4'
-    port: 22
-    username: 'admin'
-    password: 'admin'
-    platform: 'arista_eos'
+  hostname: "172.17.0.4"
+  port: 22
+  username: "admin"
+  password: "admin"
+  platform: "arista_eos"
 ```
 
-We will create the following ```show_version.py``` file in the same location: 
+> [!TIP] You should never store actual credentials in plane text in a repository, but this is just an ephemeral test infrastructure that is isolated, so no need to overcomplicated it.
+
+We will create the following `show_version.py` file in the same location:
 
 ```python
 #!/usr/bin/env python
@@ -178,30 +182,30 @@ from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
 from nornir_utils.plugins.functions import print_result
 
-# Initialize Nornir, by default it will look for the 
-# hosts.yaml file in the same directory. 
+# Initialize Nornir, by default it will look for the
+# hosts.yaml file in the same directory.
 nr = InitNornir()
 
-# Run the show version command for each of the devices. 
-# store the value in the results variable. 
+# Run the show version command for each of the devices.
+# store the value in the results variable.
 result = nr.run(
     task=netmiko_send_command,
     command_string="show version"
 )
 
-# print the results in 
+# print the results in
 print_result(result)
 ```
 
-Let's run this script to make sure it works: 
+Let's run this script to make sure it works:
 
 ```
-$ python3 show_version.py 
+$ python3 show_version.py
 netmiko_send_command************************************************************
 * eos-1 ** changed : False *****************************************************
 vvvv netmiko_send_command ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO
 Arista cEOSLab
-Hardware version: 
+Hardware version:
 Serial number: 970C2A3DEA7A3E1C730AD4FD47A75A27
 Hardware MAC address: 001c.7346.2f03
 System MAC address: 001c.7346.2f03
@@ -224,7 +228,7 @@ Free memory: 2949288 kB
 * eos-2 ** changed : False *****************************************************
 vvvv netmiko_send_command ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO
 Arista cEOSLab
-Hardware version: 
+Hardware version:
 Serial number: 868F6472C3E2BA30C656579193F18681
 Hardware MAC address: 001c.7398.de1a
 System MAC address: 001c.7398.de1a
@@ -246,11 +250,11 @@ Free memory: 2949288 kB
 ^^^^ END netmiko_send_command ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
-Great! This script works, let's see how we can move this to a CI/CD pipeline and allow the runners to execute the script. 
+Great! This script works, let's see how we can move this to a CI/CD pipeline and allow the runners to execute the script.
 
 ## Move Script to Pipeline
 
-The first thing we will do is to move the hosts.yaml and show_version.py files to the project directory. In the steps below we show how to do this in Codespace via command line, but it can also be done on the web interface on GitLab. 
+The first thing we will do is to move the hosts.yaml and show_version.py files to the project directory. In the steps below we show how to do this in Codespace via command line, but it can also be done on the web interface on GitLab.
 
 ```
 $ cd autocon_lab1/
@@ -262,7 +266,7 @@ $ ls
 hosts.yaml  my_file.txt  new_file_under_dev.txt  README.md  show_version.py
 ```
 
-We will also do a ```git pull``` to pull down the ```.gitlab-ci.yml``` file: 
+We will also do a `git pull` to pull down the `.gitlab-ci.yml` file:
 
 ```
 $ git pull
@@ -278,24 +282,24 @@ Fast-forward
  .gitlab-ci.yml | 10 ++++++++++
  1 file changed, 10 insertions(+)
  create mode 100644 .gitlab-ci.yml
- ```
+```
 
- We will swap out the ```echo "hello world"``` in the ```.gitlab-ci.yml``` file as well as change the base image to ```python:3.10```:  
+We will swap out the `echo "hello world"` in the `.gitlab-ci.yml` file as well as change the base image to `python:3.10` (because it incorporates all the necessary components for Python development):
 
- ```
- stages: 
-  - deploy
+```
+stages:
+ - deploy
 
 deploy testing:
-  image: "python:3.10"
-  stage: deploy
-  tags: 
-    - "ericchou-1"
-  script: 
-    - python3 show_version.py
- ```
+ image: "python:3.10"
+ stage: deploy
+ tags:
+   - "ericchou-1"
+ script:
+   - python3 show_version.py
+```
 
-We will need to commit the files and push to the remote repository: 
+We will need to commit the files and push to the remote repository:
 
 ```
 $ git add .gitlab-ci.yml hosts.yaml show_version.py
@@ -306,7 +310,7 @@ $ git commit -m "modified .gitlab-ci.yml, added hosts.yaml and show_version.py"
  create mode 100644 hosts.yaml
  create mode 100644 show_version.py
 
-$ git push 
+$ git push
 Enumerating objects: 7, done.
 Counting objects: 100% (7/7), done.
 Delta compression using up to 2 threads
@@ -317,37 +321,37 @@ To gitlab.com:eric-chou-1/autocon_lab1.git
    cd58621..2252bbd  main -> main
 ```
 
-When we hop back to the GitLab repository, we see the pipeline failed: 
+When we hop back to the GitLab repository, we see the pipeline failed:
 
 ![show_version_1](images/show_version_1.png)
 
-If we take a closer look, we can see the reason for the failure is becuase the runners do not have necessary nornir packages. 
+If we take a closer look, we can see the reason for the failure is because the runners do not have the necessary `nornir` package (remember that we installed it in your shell before?).
 
 ![show_version_2](images/show_version_2.png)
 
-This brings up an important point, it is that each runner is self-containerd and ran atomically. We need to make sure all the necessary steps are listed out in the pipeline. 
+This brings up an important point, it is that each runner execution is self-contained and ran atomically. We need to make sure all the necessary steps are listed out in the pipeline.
 
-Here is a modified version of the ```.gitlab-ci.yml``` file: 
+Here is a modified version of the `.gitlab-ci.yml` file:
 
 ```
-stages: 
+stages:
   - deploy
 
 deploy testing:
   image: "python:3.10"
   stage: deploy
-  tags: 
+  tags:
     - "ericchou-1"
 
-  script: 
+  script:
     - pip3 install nornir_utils nornir_netmiko
     - python3 show_version.py
 ```
 
-Let's commit and up it upstream: 
+Let's commit and up it upstream:
 
 ```
-$ git add .gitlab-ci.yml 
+$ git add .gitlab-ci.yml
 $ git commit -m "modified gitlab-ci.yml"
 $ git push origin main
 ```
@@ -356,7 +360,7 @@ The pipeline is now successful.
 
 ![show_version_3](images/show_version_3.png)
 
-Here is the full output log: 
+Here is the full output log:
 
 ```
 Running with gitlab-runner 17.5.3 (12030cf4)
@@ -405,7 +409,7 @@ netmiko_send_command************************************************************
 * eos-1 ** changed : False *****************************************************
 vvvv netmiko_send_command ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO
 Arista cEOSLab
-Hardware version: 
+Hardware version:
 Serial number: 225EF9483A61E4548BA2BF0C9BD8EFE0
 Hardware MAC address: 001c.73f7.5a7f
 System MAC address: 001c.73f7.5a7f
@@ -424,7 +428,7 @@ Free memory: 10560976 kB
 * eos-2 ** changed : False *****************************************************
 vvvv netmiko_send_command ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO
 Arista cEOSLab
-Hardware version: 
+Hardware version:
 Serial number: 03F75C6F47DE04B9ED362BBBBFF4679C
 Hardware MAC address: 001c.73ea.e983
 System MAC address: 001c.73ea.e983
@@ -447,4 +451,4 @@ Job succeeded
 
 ## Next Steps
 
-Congratulations on building your first Pipeline! This is a huge step forward. In the next lab, we will take a look at some of the tools to help the team collaborate together. 
+Congratulations on building your first Pipeline! This is a huge step forward. In the next lab, we will take a look at some of the tools to help the team collaborate together.
