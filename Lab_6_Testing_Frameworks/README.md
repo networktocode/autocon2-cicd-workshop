@@ -24,11 +24,11 @@ git switch Lab_6_Testing_Frameworks
 
 ## Ensure Container Lab Topology is up
 
-In Lab 4 we started our Containerlab topology. Quickly make sure that is still up and the Mgmt IPs havent changed.
+In Lab 4 we started our Containerlab topology. Quickly make sure that is still up and the Mgmt IPs haven't changed.
 
 ```
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/clab (jkala-work) $ sudo containerlab inspect
-INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml 
+INFO[0000] Parsing & checking topology file: ceos-lab.clab.yml
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
 | # |  Name   | Container ID |    Image     | Kind |  State  | IPv4 Address  | IPv6 Address |
 +---+---------+--------------+--------------+------+---------+---------------+--------------+
@@ -48,7 +48,7 @@ The Lab 6 steps:
 First, we will look at the `stages:` section which has three added stages.
 
 ```yml
-stages:  # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - "lab-4-lint-and-format"
   - "lab-4-pytest"
   - "lab-5-generate"
@@ -81,7 +81,7 @@ In the first includes file `.gitlab/ci/lab-6-pre-checks.gitlab-ci.yml` we use Ba
   - Assert no incompatible OSPF sessions exist.
   - Assert exactly 4 OSPF processes exist.
 
-> [!INFO] 
+> [!INFO]
 > This barely introduces what Batfish can do. Look into [Batfish](https://batfish.org/) for more information.
 
 These steps are accomplished in the pipeline by running our click app and calling the proper function.
@@ -115,7 +115,6 @@ config-deploy-job:
   script:
     - "echo 'Deploy the generated configs..'"
     - "poetry run python ac2_cicd_workshop/cli.py deploy-config"
-    # when: "manual"
 ```
 
 4. Use NUTS to Execute Post Checks
@@ -124,9 +123,9 @@ Finally, we will use Pytest and specifically the NUTS plugin extension to valida
 
 Since NUTS is a pytest plugin, we don't need to build the underlying code to execute the test. We simply add test into our `tests` directory.
 
-First, we create a `nuts` folder inside the `tests` directory. This allows us to seperate our pytest related test executions.
+First, we create a `nuts` folder inside the `tests` directory. This allows us to separate our pytest related test executions.
 
-> [!INFO] 
+> [!INFO]
 > When we run our source code checks via pytest we don't want to run the NUTS test also.
 
 Second, we use one of the native NUTS tests to make sure our new expected OSPF routing is working.
@@ -165,7 +164,6 @@ That file is `tests/nuts/test-definition-ping.yaml`
 This test file has ping checks to validate reachability of our new Lo100 OSPF routes.
 
 ## Execute the Full Pipeline
-
 
 Since lab 5 included a push of the code, we don't have any actual changes to push. Except for copying over our `host.yaml` file again (downside of using this branching technique).
 
