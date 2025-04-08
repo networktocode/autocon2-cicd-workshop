@@ -48,7 +48,7 @@ Please do the following steps to set up the lab:
 
 ![arista_download_1](images/arista_download_1.png)
 
-Please download images later than 4.28. We will use 4.32.0F for our lab.
+Please download 4.32.0F for our lab.
 
 ![arista_downaload_2](images/arista_download_2.png)
 
@@ -62,7 +62,7 @@ Please download images later than 4.28. We will use 4.32.0F for our lab.
 
 Alright, now it is time to tie everything together.
 
-1. In this repository, we can start Codespace by going to Code button on the top left corner and choose 'Create codespace on main':
+1. On this GitHub repository, we can start Codespace by going to Code button on the top left corner and choose 'Create codespace on main':
 
 ![codespace_start](images/codespace_start.png)
 
@@ -97,7 +97,7 @@ This message shows that your installation appears to be working correctly.
  rel. notes: https://containerlab.dev/rn/0.66/
 ```
 
-2. After codespace is started, right click in the Explorer section and choose upload:
+2. After codespace is started, right click in the Explorer section and choose upload. The upload the cEOS image previously downloaded:
 
 ![upload_ceos](images/upload_ceos.png)
 
