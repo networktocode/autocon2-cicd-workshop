@@ -21,11 +21,15 @@ In GitLab UI navigate to Settings -> Access Tokens
 
 ![nav-access-token](./images/nav-access-token.png)
 
-Save this token somewhere safe!
+Next, create an access token. The scopes are in the screenshot below. Navigate to Settings -> Access tokens from your GitLab forked project.
+
+![access-token](./images/access-token-generated.png)
+
+Save this token somewhere safe as you won't be able to see the secret again! (you should crearte a new one if you lose it)
 
 ## Clone the GitLab Forked Project into Codespaces
 
-Now clone the GitLab repo in to your codespace environment. This will allow everything to be managed from this single place.
+Now clone the GitLab repo (using the Code -> Clone with HTTPS from repository initial page) in to your codespace environment. This will allow everything to be managed from this single place.
 
 ```sh
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev (jkala-work) $ git clone https://gitlab.com/jeffkala/ac2-cicd-workshop.git
@@ -42,15 +46,10 @@ Once the forked repository is cloned into codespace you will see it in your file
 
 ![codespace-with-fork](./images/codespace-with-fork.png)
 
-Next, create an access token. The scopes are in the screenshot below. Navigate to Settings -> Access tokens from your GitLab forked project.
-
-![access-token](./images/access-token-generated.png)
-
-Finally, in set your origin with your HTTP basic authentication (from within the `ac2_cicd_workshop` directory), use the token as `<glpat>`.
+Finally, in set your origin with your HTTP basic authentication (from within the `ac2_cicd_workshop` directory), use the access token from above as `<glpat>` and your username to grant the necessary permissions via HTTP.
 
 ```sh
-@jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/ac2-cicd-workshop/ac2_cicd_workshop (Lab_4_Source_Code_Checks) $ git remote set-url origin https://<gitlab-user>:<glpat>@gitlab.
-com/jeffkala/ac2-cicd-workshop.git
+@jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/ac2-cicd-workshop/ac2_cicd_workshop (Lab_4_Source_Code_Checks) $ git remote set-url origin https://<gitlab-user>:<glpat>@gitlab.com/jeffkala/ac2-cicd-workshop.git
 ```
 
 ## Run Containerlab Topology and Update the Nornir Inventory
@@ -89,7 +88,7 @@ INFO[0083] Adding ssh config for containerlab nodes
 
 Now that the lab has been deployed in the Codespace environment, and we have the mgmt IPs of the equipment we must update the Nornir inventory host file with the assigned IPs.
 
-1. To get started we will checkout the GitLab branch called `Lab_4_Source_Code_Checks` where we will update our Nornir inventory and push the code up to run the code checks.
+1. To get started we will checkout the GitLab (not in the GitHub codespace) branch called `Lab_4_Source_Code_Checks` where we will update our Nornir inventory and push the code up to run the code checks.
 
 2. Navigate and Checkout the Working Branch
 
@@ -190,7 +189,7 @@ By default, the runner we created for another project is available but not enabl
 These are the two assumptions before you should push your code up:
 
 1. Ensure you've updated your Nornir inventory files from [here](README.md#run-containerlab-topology-and-update-the-nornir-inventory).
-2. Navigate to the main `.gitlab-ci.yml` pipeline file and update your tag to what you deployed in the first lab.
+2. Navigate to the main `.gitlab-ci.yml` pipeline file and update your tag to what you deployed in the first lab. Keep the same image name as it comes with all the dependencies we need.
 
 ```yml
 ---
