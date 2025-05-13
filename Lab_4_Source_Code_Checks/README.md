@@ -25,7 +25,7 @@ Next, create an access token. The scopes are in the screenshot below. Navigate t
 
 ![access-token](./images/access-token-generated.png)
 
-Save this token somewhere safe as you won't be able to see the secret again! (you should crearte a new one if you lose it)
+Save this token somewhere safe as you won't be able to see the secret again! (you should create a new one if you lose it)
 
 ## Clone the GitLab Forked Project into Codespaces
 
@@ -46,7 +46,7 @@ Once the forked repository is cloned into codespace you will see it in your file
 
 ![codespace-with-fork](./images/codespace-with-fork.png)
 
-Finally, in set your origin with your HTTP basic authentication (from within the `ac2_cicd_workshop` directory), use the access token from above as `<glpat>` and your username to grant the necessary permissions via HTTP.
+Finally, set your origin with your HTTP basic authentication (from within the `ac2_cicd_workshop` directory), use the access token from above as `<glpat>` and your username to grant the necessary permissions via HTTP.
 
 ```sh
 @jeffkala ➜ /workspaces/autocon2-cicd-workshop-dev/ac2-cicd-workshop/ac2_cicd_workshop (Lab_4_Source_Code_Checks) $ git remote set-url origin https://<gitlab-user>:<glpat>@gitlab.com/jeffkala/ac2-cicd-workshop.git
