@@ -92,7 +92,7 @@ diff-config-job:
   allow_failure: true
   script:
     - "echo 'Diff configuration files..'"
-    - "diff -y -r ac2_cicd_workshop/output/configs/ topologies/network-lab/startup-configs/"
+    - "diff -y -r ac2_cicd_workshop/output/configs/ ac2_cicd_workshop/output/startup-configs/"
 ```
 
 You can see here, we're simply reusing our click app that we packaged with the application. We're running the click app and passing in our inventory source. This will run the Nornir tasks to generate and save the new configuration files, by default saving them in the GitLab repo directory `output`, and naming the files `<hostname>.conf`.
